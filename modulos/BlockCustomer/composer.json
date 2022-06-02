@@ -1,0 +1,26 @@
+{
+    "name": "customcode/module-blockcustomer",
+    "description": "Block Customer  without purchases",
+    "type": "magento2-module",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Mage2Gen",
+            "email": "info@mage2gen.com"
+        },
+        {
+            "name": "roiman ramos",
+            "email": "ramosroiman@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Customcode\\BlockCustomer\\": ""
+        }
+    }
+}

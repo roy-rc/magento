@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+	<group id="default">
+		<job instance="Customcode\Ctacorriente\Cron\Customers" method="execute" name="customcode_ctacorriente_cron">
+			<schedule>15 3 * * *</schedule>
+		</job>
+	</group>
+</config>

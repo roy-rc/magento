@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+	<default>
+		<login_by_email>
+			<configuration>
+				<module_enabled>0</module_enabled>
+				<minutes_between_request>5</minutes_between_request>
+			</configuration>
+		</login_by_email>
+	</default>
+</config>

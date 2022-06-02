@@ -1,0 +1,336 @@
+<?php
+use Magento\Framework\View\Element\Template;
+/** @var Template $block */
+ 
+$estado_data = $block->getData('estado');
+$order_id = $block->getData('order_id');
+$order = $block->getData('order');
+$return = $block->getData('return');
+
+$detalleOrden = $order->getData();
+$estado_key="";
+if(count($estado_data)){
+    $last_elem = end($estado_data);
+    foreach($last_elem  as $key => $value){
+        $estado_key = $key;
+    }
+}
+
+$status_type = array(
+    "En Espera de Aprobación" => 1,
+    "Preparando" => 2,
+    "pickeado" => 3,
+    "Factura" => 4,
+    "Transporte" => 5,
+);
+$estado_text = array(
+    1 => "En Espera de Aprobación",
+    2 => "Preparando",
+    3 => "pickeado",
+    4 => "Factura",
+    5 => "Transporte",
+);
+
+$estado_id = 1;
+foreach ($estado_data as $k => $v){
+    foreach ($v as $key => $valor){
+        if(key_exists(trim($key), $status_type)){
+            if($estado_id <= $status_type[trim($key)]){
+                $estado_id = $status_type[trim($key)];
+            }
+        }
+    }   
+}
+
+$others_attr = false;
+$despacho_attr = array();
+$estado_actual = $estado_text[$estado_id];
+
+$despacho_attr["DocNum"] = array("title"=>"Numero de documento","value"=>"");
+$despacho_attr["Trasportista"] = array("title"=>"Transportista","value"=>"");
+$despacho_attr["Bultos"] = array("title"=>"Bultos","value"=>"");
+$despacho_attr["NumeroDocumento"] = array("title"=>"Numero de Documento","value"=>"");
+$despacho_attr["Fecha"] = array("title"=>"Fecha","value"=>"") ;
+$despacho_attr["Hora"] = array("title"=>"Hora","value"=>"");
+
+if($estado_id == 5){
+    foreach ($estado_data as $k => $v){
+        foreach ($v as $key => $valor){
+            if (trim($key) == "Transporte"){
+                $others_attr = true;
+            }
+            if($others_attr){
+                switch (trim($key)) {
+                    case 'DocNum':
+                        //$despacho_attr["DocNum"] =  ($valor != "" AND $valor != "null") ? array("title"=>"Numero de documento","value"=>$valor) : array("title"=>"Numero de documento","value"=>"");
+                        //No mostrar el attr DocNum en traking
+                        $despacho_attr["DocNum"] =  array("title"=>"Numero de documento","value"=>"");
+                        break;
+                    case 'Trasportista':
+                        $despacho_attr["Trasportista"] =  ($valor != "" AND $valor != "null") ? array("title"=>"Transportista","value"=>$valor): array("title"=>"Transportista","value"=>"");
+                        break;
+                    case 'Bultos':
+                        $despacho_attr["Bultos"] = ($valor != "" AND $valor != "null") ? array("title"=>"Bultos","value"=>$valor): array("title"=>"Bultos","value"=>"");
+                        break;
+                    case 'NumeroDocumento':
+                        $despacho_attr["NumeroDocumento"] =  ($valor != "" AND $valor != "null") ? array("title"=>"Numero de Documento","value"=>$valor) : array("title"=>"Numero de Documento","value"=>"");
+                        break;
+                    case 'Fecha':
+                        $despacho_attr["Fecha"] = ($valor != "" AND $valor != "null") ? array("title"=>"Fecha","value"=>date("d-m-Y",strtotime($valor))) : array("title"=>"Fecha","value"=>"") ;
+                        break;
+                    case 'Hora':
+                        $despacho_attr["Hora"] =  ($valor != "" AND $valor != "null") ? array("title"=>"Hora","value"=>$valor): array("title"=>"Hora","value"=>"");
+                   
+                }
+            }
+        }
+    }
+}
+$despacho_attr["Fecha"]["value"] .= " ".$despacho_attr["Hora"]["value"] ;
+$despacho_attr["Hora"]["value"] = "";
+ switch (trim($estado_key)) { 
+    case 'En Espera de Aprobación':
+        $estado_actual = "En espera de aprobación";
+        break;
+    case 'Preparando':
+        $estado_actual = "Procesando";
+        break;
+    case 'pickeado':
+        $estado_actual = "Pickeado";
+        break;
+    case 'Factura':
+        $estado_actual = "Facturado";
+        break;
+    case 'Transporte':
+        $estado_actual = "Despachado";
+        break;
+    default:
+        $estado_actual = "En espera de aprobación";
+        break;
+} 
+?>
+<?php if($return): ?>
+    <script>
+        window.location = '/sales/order/history/';
+    </script>
+<?php endif; ?>
+
+<style>
+    body.customcode_tracking-index-index #maincontent {
+        margin-top: 5rem;
+    }
+    .card {
+        position: relative;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 0.10rem
+    }
+
+    .card-header:first-child {
+        border-radius: calc(0.37rem - 1px) calc(0.37rem - 1px) 0 0
+    }
+
+    .card-header {
+        padding: 0.75rem 1.25rem;
+        margin-bottom: 0;
+        background-color: #fff;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1)
+    }
+
+    .col {
+        margin-left: 20px;
+    }
+
+    .track {
+        position: relative;
+        background-color: #ddd;
+        height: 7px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        margin-bottom: 60px;
+        margin-top: 50px
+    }
+
+    .track .step {
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+        width: 25%;
+        margin-top: -18px;
+        text-align: center;
+        position: relative
+    }
+
+    .track .step.active:before {
+        background: #01388a
+    }
+
+    .track .step::before {
+        height: 7px;
+        position: absolute;
+        content: "";
+        width: 100%;
+        left: 0;
+        top: 18px
+    }
+
+    .track .step.active .icon {
+        background: #01388a;
+        color: #fff
+    }
+
+    .track .icon {
+        display: inline-block;
+        width: 90px;
+        height: 90px;
+        line-height: 110px;
+        position: relative;
+        border-radius: 100%;
+        background: #ddd;
+        top: -25px;
+    }
+
+    .track .step.active .text {
+        font-weight: 400;
+        color: #000
+    }
+
+    .track .text {
+        display: block;
+        margin-top: 7px
+    }
+
+    .itemside {
+        position: relative;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        width: 100%
+    }
+
+    .itemside .aside {
+        position: relative;
+        -ms-flex-negative: 0;
+        flex-shrink: 0
+    }
+
+    .img-sm {
+        width: 80px;
+        height: 80px;
+        padding: 7px
+    }
+
+    ul.row,
+    ul.row-sm {
+        list-style: none;
+        padding: 0
+    }
+
+    .itemside .info {
+        padding-left: 15px;
+        padding-right: 7px
+    }
+
+    .itemside .title {
+        display: block;
+        margin-bottom: 5px;
+        color: #212529
+    }
+
+    p {
+        margin-top: 0;
+        margin-bottom: 1rem
+    }
+
+    .btn-warning {
+        color: #ffffff;
+        background-color: #01388a;
+        border-color: #01388a;
+        border-radius: 1px
+    }
+
+    .btn-warning:hover {
+        color: #ffffff;
+        background-color: #ff2b00;
+        border-color: #ff2b00;
+        border-radius: 1px
+    }
+    @media only screen and (max-width: 767px) {
+        .track .icon {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 45px;
+            position: relative;
+            border-radius: 100%;
+            background: #ddd;
+            top: 0px;
+        }
+        .fa-3x {
+            font-size: 1.5em;
+        }
+        .track .text {
+            display: block;
+            margin-top: 7px;
+            font-size: 10px;
+        }
+        h3 {
+            font-size: 20px;
+        }
+    }
+
+</style>
+<div class="container">
+    <article class="card">
+        <header class="card-header"> <h3>Mis Ordenes / Seguimiento de orden</h3> </header>
+        <div class="card-body">
+            <br>
+            <article class="card">
+                <div class="card-body">
+                    <h6>Order ID: <?php echo $order->getIncrementId(); ?></h6>
+                    <?php if($order->getFechaCompromisoDespacho()): ?>
+                        <div class="col"> <strong>Fecha estimada de despacho:</strong> <?php echo date("d-m-Y",strtotime($order->getFechaCompromisoDespacho())); ?></div>
+                    <?php endif; ?>
+                    <?php if($detalleOrden["shipping_description"]): ?>
+                        <div class="col"> <strong>Transporte / Retiro:</strong> <?php echo $detalleOrden["shipping_description"]?></div>
+                    <?php endif; ?>
+
+                    <div class="col"> <strong>Status:</strong> <?php echo $estado_actual; ?> </div>
+                </div>
+                <br>
+                <button onClick="window.location.reload();" class="btn btn-warning pull-right" data-abc="true" style="width: rem;width: 155px;margin-bottom: 20px;"> <i class="fas fa-retweet"></i> Actualizar</button>            
+            </article>
+            <div class="track">
+                <div class="step <?php if($estado_id >= 1) echo " active"; ?>"> <span class="icon"> <i class="far fa-clock fa-3x"></i> </span> <span class="text">En espera de aprobación</span> </div>
+                <div class="step <?php if($estado_id >= 2) echo " active"; ?>"> <span class="icon"> <i class="fas fa-tasks fa-3x"></i> </span> <span class="text"> Procesando</span> </div>
+                <div class="step <?php if($estado_id >= 3) echo " active"; ?>"> <span class="icon"> <i class="fas fa-people-carry fa-3x"></i> </span> <span class="text">Pickeado</span> </div>
+                <div class="step <?php if($estado_id >= 4) echo " active"; ?>"> <span class="icon"> <i class="fas fa-file-invoice-dollar fa-3x"></i> </span> <span class="text">Facturado</span> </div>
+                <div class="step <?php if($estado_id == 5) echo " active"; ?>"> 
+                    <span class="icon"> <i class="fas fa-truck-moving fa-3x"></i> </span> 
+                    <span class="text">Despachado</span> 
+                    <?php foreach($despacho_attr as $item): ?>
+                        <?php if($item["value"]!="" AND  $item["value"]!='null' AND  $item["value"]!=' '): ?>
+                        <span class="text"><?php echo $item["title"].": ".$item["value"]?></span> 
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                    
+                </div>
+            </div>
+            <hr>
+            
+            
+            <a href="/sales/order/history/" class="btn btn-warning pull-right" data-abc="true" style="margin-top: 180px;"> <i class="fa fa-chevron-left"></i> Volver</a>
+        </div>
+    </article>
+</div>

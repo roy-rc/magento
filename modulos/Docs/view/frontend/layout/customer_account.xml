@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="customer_account_navigation">
+            <block class="Magento\Framework\View\Element\Html\Link\Current" name="customer-account-navigation-docs" ifconfig="documents/documents/enable_disable_gws_doc" cacheable="false">
+                <arguments>
+                    <argument name="path" xsi:type="string">docs/customer/index</argument>
+                    <argument name="label" xsi:type="string">Condición de pago</argument>
+                    <argument name="attributes" xsi:type="array">
+                        <item name="class" xsi:type="string">gws_documents</item>
+                    </argument>
+                </arguments>
+            </block>
+            <block class="Magento\Framework\View\Element\Html\Link\Current" name="customer-account-navigation-hist" ifconfig="documents/documents/enable_disable_gws_doc" cacheable="false">
+                <arguments>
+                    <argument name="path" xsi:type="string">docs/customer/hist</argument>
+                    <argument name="label" xsi:type="string">Historial de Notas de Credito</argument>
+                    <argument name="attributes" xsi:type="array">
+                        <item name="class" xsi:type="string">gws_documents</item>
+                    </argument>
+                </arguments>
+            </block>
+            <block class="Magento\Framework\View\Element\Html\Link\Current" name="customer-account-navigation-histfv" ifconfig="documents/documents/enable_disable_gws_doc" cacheable="false">
+                <arguments>
+                    <argument name="path" xsi:type="string">docs/customer/histfv</argument>
+                    <argument name="label" xsi:type="string">Historial de Facturas</argument>
+                    <argument name="attributes" xsi:type="array">
+                        <item name="class" xsi:type="string">gws_documents</item>
+                    </argument>
+                </arguments>
+            </block>
+            <referenceBlock name="customer-account-navigation-my-credit-cards-link" remove="true"/>
+        </referenceBlock>
+    </body>
+</page>

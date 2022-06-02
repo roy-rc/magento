@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<preference for="Customcode\LoginByEmail\Api\CustomerLoginRepositoryInterface" type="Customcode\LoginByEmail\Model\CustomerLoginRepository"/>
+	<preference for="Customcode\LoginByEmail\Api\Data\CustomerLoginInterface" type="Customcode\LoginByEmail\Model\Data\CustomerLogin"/>
+	<preference for="Customcode\LoginByEmail\Api\Data\CustomerLoginSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+	<preference for="Magento\Customer\Controller\Account\Login" type="Customcode\LoginByEmail\Controller\Account\Login" />
+</config>

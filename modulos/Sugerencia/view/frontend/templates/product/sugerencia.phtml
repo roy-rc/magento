@@ -1,0 +1,73 @@
+<?php
+/**
+ * @var $block \Customcode\Sugerencia\Block\Product\Sugerencia
+ */
+?>
+
+<?php
+    $_product = $block->getProduct();
+    $_customer = $block->getCustomer();
+    $ejecutivo_email = "servicioalcliente@nipon.cl";
+    if($_customer){
+        if($_customer->getCustomAttribute('ejecutivo_telefonico_email')){
+            if($_customer->getCustomAttribute('ejecutivo_telefonico_email')->getValue() != "null" and $_customer->getCustomAttribute('ejecutivo_telefonico_email')->getValue() != ""){
+                $ejecutivo_email = $_customer->getCustomAttribute('ejecutivo_telefonico_email')->getValue();
+            }elseif($ejecutivo_email = $_customer->getCustomAttribute('ejecutivo_email')->getValue() != "null" and $ejecutivo_email = $_customer->getCustomAttribute('ejecutivo_email')->getValue() != ""){
+                $ejecutivo_email = $_customer->getCustomAttribute('ejecutivo_email')->getValue();
+            } 
+        }
+               
+    }
+?>
+
+<?php //echo __('Hello Customcode_Sugerencia::product/sugerencia.phtml') ?>
+
+<div class="sugerencias-ficha">
+    <span class="title">SUGERENCIAS</span>
+    <form id="sugerencia-form" method="POST">                    
+        <input type="email" required placeholder="Ingresar correo" name="correo" class="mb-1"> 
+        <input type="hidden" name="sku" value="<?php echo $_product->getSku(); ?>">
+        <input type="hidden" name="ejecutivo_email" value="<?php echo $ejecutivo_email; ?>">
+        <input type="hidden" name="name" value="sugerencias Nipon">
+        <input type="hidden" name="campo_falso" value="">
+        <input type="hidden" name="url" value="<?php echo $this->getUrl('*/*/*', ['_current' => true, '_use_rewrite' => true]); ?>">
+        <textarea name="sugerencia" required id="" cols="10" rows="3" placeholder="Ingresar sugerencias"></textarea>
+        <div class="text-right" style="position: relative;top: -3px;">
+            <button class="btn-sugerencias" id="enviar-sugerencias"><span>Enviar sugerencia</span><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </form>
+    <p id="sugerencia_msg"></p>
+</div>
+
+
+
+
+<script>
+require([
+    "jquery",
+], function($){
+	$("#sugerencia-form").on("submit", function(event){
+        event.preventDefault();
+		$("#enviar-sugerencias").css("display","none");
+        $("#sugerencia_msg").removeClass();
+        $("#sugerencia_msg").addClass( "bg-warning" );
+        $("#sugerencia_msg").html("Enviando sugerencia...")
+        var formValues= $(this).serialize();
+ 
+        $.post("/sugerencia", formValues, function(data){
+            // Display the returned data in browser
+            if(data == "true"){
+                $("#sugerencia_msg").removeClass();
+                $("#sugerencia_msg").addClass( "bg-success" );
+                $("#sugerencia_msg").html("Su sugerencia fue enviada con exito!")
+            }else{
+                $("#sugerencia_msg").removeClass();
+                $("#sugerencia_msg").addClass( "bg-danger" );
+                $("#sugerencia_msg").html("Ocurrio un error inesperado, intente mas tarde!")
+            }
+
+        });
+    });
+	
+});
+</script>

@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+	<default>
+		<payment>
+			<ctacorriente>
+				<active>1</active>
+				<model>Customcode\Ctacorriente\Model\Payment\Ctacorriente</model>
+				<order_status>pending</order_status>
+				<title>Ctacorriente</title>
+				<allowspecific>0</allowspecific>
+				<group>offline</group>
+			</ctacorriente>
+		</payment>
+		<ctacorriente_parameters>
+			<store_ctacorriente_data>
+				<idTienda>0000-0000-0000</idTienda>
+				<rut>12.345.678-9</rut>
+				<razonSocial>Empresa XYZ</razonSocial>
+				<direccion>Direccion Empresa XYZ</direccion>
+				<comuna>Comuna</comuna>
+				<region>Región</region>
+			</store_ctacorriente_data>
+			<endpoint_ctacorriente_data>
+				<listadoUsuarios>https://url.json</listadoUsuarios>
+				<registroCompra>https://url.com</registroCompra>
+			</endpoint_ctacorriente_data>
+		</ctacorriente_parameters>
+	</default>
+</config>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="customer_register_success">
+        <observer name="customer_register_success" instance="Customcode\Ctacorriente\Observer\ManageCustomer" />
+    </event>
+    <event name="payment_method_is_active">
+        <observer name="payment_method_is_active" instance="Customcode\Ctacorriente\Observer\FilterPayment" />
+    </event>
+    <event name="customer_login">
+        <observer name="customer_login" instance="Customcode\Ctacorriente\Observer\CustomerLogin" />
+    </event>
+</config>

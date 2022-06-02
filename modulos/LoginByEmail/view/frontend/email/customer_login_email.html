@@ -1,0 +1,50 @@
+<!--@subject {{trans "Tu código de acceso a nuestra tienda web: %store_name. " store_name=$store.getFrontendName()}} @-->
+<!--@vars {
+"var login_code":"Login Code",
+"var login_url":"Login URL"
+} @-->
+{{template config_path="design/email/header_template"}}
+
+<table>
+    <tr class="email-intro">
+        <td>
+            <p class="greeting">Hola,</p>
+            <p>
+                {{trans "Recientemente has solicitado acceso a nuestra tienda web %store_name. " store_name=$store.getFrontendName()}}
+            </p>
+        </td>
+    </tr>
+    <tr class="email-information">
+        <td>
+            {{depend login_code}}
+            <table class="message-info" style="text-align:center;width: 100%;border: 1px solid #bababa;border-radius: 5px;margin-top: 10px;">
+                <tr>
+                    <td>
+			<br />
+                        Utiliza este código para iniciar sesión:
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h1>{{var login_code|escape|nl2br}}</h1>
+                    </td>
+                </tr>
+            </table>
+            {{/depend}}
+        </td>
+    </tr>
+    {{depend login_url}}
+    <tr class="email-intro" style="padding-top: 20px;">
+        <td>
+            <p class="greeting" style="text-align: center; margin-top: 20px;">Puedes hacer clic en el botón para acceder directamente a tu cuenta.</p>
+            <p style="text-align: center; margin-top: 30px;">
+                <a style="padding: 15px 20px; color: #fff; background-color: #000; border-radius: 3px; font-size: 16px; text-decoration: none;" href="{{var login_url|raw}}">Acceder a Mi Cuenta</a>
+                <br />
+            </p>
+            <p style="text-align: center; color: #bababa; font-style: italic; margin-top: 30px;">También puedes copiar y pegar esta URL directo en tu navegador:<br />{{var login_url|raw}}</p>
+        </td>
+    </tr>
+    {{/depend}}
+</table>
+
+{{template config_path="design/email/footer_template"}}

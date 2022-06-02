@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+	<system>
+		<section id="login_by_email" sortOrder="0" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+			<label>Login by Email</label>
+			<tab>customer</tab>
+			<resource>Customcode_LoginByEmail::config_customcode_loginbyemail</resource>
+			<group id="configuration" sortOrder="0" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+				<label>Configuration</label>
+				<field id="module_enabled" type="select" sortOrder="0" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+					<label>Enable Login by Email</label>
+					<comment/>
+					<source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+				</field>
+				<field id="minutes_between_request" type="text" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+					<label>Minutes between requests</label>
+					<comment/>
+				</field>
+			</group>
+		</section>
+	</system>
+</config>

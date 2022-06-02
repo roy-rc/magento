@@ -1,0 +1,9 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="customer_login_email"
+              label="Customer Login by Email"
+              file="customer_login_email.html"
+              type="html"
+              module="Customcode_LoginByEmail"
+              area="frontend"
+    />
+</config>

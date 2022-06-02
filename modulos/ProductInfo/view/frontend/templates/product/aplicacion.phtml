@@ -1,0 +1,53 @@
+<?php
+/**
+ * @var $block \Customcode\ProductInfo\Block\Product\Aplicacion
+ */
+?>
+<?php  $list_aplicacion = $block->showAplicacion() ?>
+<?php //echo __('Hello Customcode_ProductInfo::product/aplicacion.phtml'); ?>
+
+<?php 
+
+/* if ($currentProduct = $block->getCurrentProduct()) {
+    echo $currentProduct->getName() . '<br />';
+    echo $currentProduct->getSku() . '<br />';
+    echo $currentProduct->getFinalPrice() . '<br />';
+    echo $currentProduct->getProductUrl() . '<br />';
+    //print_r ($currentProduct->getCategoryIds()) . '<br />';    
+}
+ */
+?>
+
+<div class="table-responsive table-aplicaciones" style="max-height: 237px;">
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr class="cabecera">
+            <th scope="col" colspan="6">APLICACIONES</th>
+        </tr>
+        <tr>
+            <th scope="col">Marca</th>
+            <th scope="col">Modelo</th>
+            <th scope="col">Motor</th>
+            <th scope="col">Cilindrada</th>
+            <th scope="col" colspan="2">Año</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <?php foreach($list_aplicacion as $key => $item):
+            if(count($item)):
+            ?>
+            <tr>
+                <th scope="row"><?php echo $item["Marca"]; ?></th>
+                <td><?php echo $item["Modelo"]; ?></td>
+                <td><?php echo $item["Motor"]; ?></td>
+                <td><?php echo $item["Cilindrada"]; ?></td>
+                <td><?php echo $item["AnoInicio"]; ?></td>
+                <td><?php echo $item["AnoTermino"]; ?></td>
+            </tr>
+        <?php
+            endif;
+            endforeach;?>
+        </tbody>
+    </table>
+</div>

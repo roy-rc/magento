@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../Magento/Backend/etc/menu.xsd">
+    <menu>
+        <add id="Customcode_CreateClientSap::parent" title="Crear clientes SAP" module="Customcode_CreateClientSap" sortOrder="100" resource="Customcode_CreateClientSap::parent"/>
+        <add id="Customcode_CreateClientSap::index" title="Crear clientes SAP" module="Customcode_CreateClientSap" sortOrder="10" action="createclientsap/index" resource="Customcode_CreateClientSap::index" parent="Customcode_CreateClientSap::parent"/>
+		
+    </menu>
+</config>

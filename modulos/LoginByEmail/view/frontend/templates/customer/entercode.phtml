@@ -1,0 +1,53 @@
+<div class="block block-customer-login">
+    <div class="block-title">
+        <h3><strong id="block-customer-login-heading" role="heading" aria-level="2">Acceso Mayoristas</strong></h3>
+    </div>
+    <div class="block-content" aria-labelledby="block-customer-login-heading">
+        <form class="form form-login"
+              action="<?= $block->getUrl('customcodelogin/customer/entercode') ?>"
+              method="get"
+              id="login-form"
+              data-mage-init='{"validation":{}}'>
+            <?= $block->getBlockHtml('formkey') ?>
+            <fieldset class="fieldset login" data-hasrequired="* Campos requeridos">
+                <div class="field note">
+                    Ingresa el código de acceso que te enviamos por email.
+                    Si aún no lo recibes, revisa tu bandeja de spam.<br />
+                    Alternativamente puedes ingresar a tu cuenta haciendo clic
+                    en el enlace que incluímos en el email que te enviamos.
+                </div>
+                <div class="field accesscode required">
+                    <label class="label" for="accesscode">
+                        <span>Código de Acceso</span>
+                    </label>
+                    <div class="control">
+                        <input name="accesscode" value=""
+                               autocomplete="off"
+                               id="accesscode" type="text" class="input-text"
+                               title="Código de Acceso"
+                               data-mage-init='{"mage/trim-input":{}}'
+                               data-validate="{required:true}">
+                    </div>
+                </div>
+                <input type="hidden" name="id" value="<?= $this->getRequest()->getParam('id') ?>">
+                <?= $block->getChildHtml('form_additional_info') ?>
+                <div class="actions-toolbar">
+                    <div class="primary">
+                        <button type="submit" class="action login primary btn btn-primary" name="send" id="send2">
+                            <span>Ingresar</span>
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <script type="text/x-magento-init">
+        {
+            "*": {
+                "Magento_Customer/js/block-submit-on-send": {
+                    "formId": "login-form"
+                }
+            }
+        }
+    </script>
+</div>

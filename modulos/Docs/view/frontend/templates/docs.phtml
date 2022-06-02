@@ -1,0 +1,235 @@
+<?php
+use Magento\Framework\View\Element\Template;
+/** @var Template $block */
+?>
+<?php
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->create('Magento\Customer\Model\Session');
+$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+
+$customer_data = $block->getData('customer_cc');
+$customer_obj = $block->getData('customer_obj');
+$customer_billing = $block->getData('customer_billing');
+$customer_shipping = $block->getData('customer_shipping');
+
+$customer = $customer_data["Response"][0];
+$customer_addres = $customer["Direcciones"]
+/* echo $this->getLayout()
+    ->createBlock('Magento\Cms\Block\Block')
+    ->setBlockId('custom_account_tab')
+    ->toHtml();
+     */
+?>
+<div class="row">
+    <div class="col-lg-12 col-xs-12">
+        <div class="box text-center margin-bottom30">
+            <h3>MI CUENTA</h3>
+        </div>
+    </div>
+    <div class="clearfix visible-sm"></div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="box card card-primary card-outline margin-top20">
+            <div class="block-title--myac card-body box-profile">
+                <div class="text-center">
+                    <!-- <img class="profile-user-img img-fluid img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture"> -->
+                </div>
+                <h3 class="profile-username text-left"><?= ucfirst(utf8_decode($customer["NombreCliente"])); ?></h3>
+                <p class="text-muted text-left">RUT. <?= $customer["Rut"]; ?></p>
+                <ul class="list-group list-group-unbordered mb-3">
+                    <li class="list-group-item">
+                        <b>Estado: </b> <a class="float-right"><?= ucfirst(strtolower($customer["EstaBloqueado"])); ?></a>
+                    </li>
+                    <!-- <li class="list-group-item">
+                        <b>Segmento: </b> <a class="float-right"><?= ucfirst(strtolower($customer["Segmento"])); ?></a>
+                    </li> -->
+                    <li class="list-group-item">
+                        <b>Codigo Cliente: </b> <a class="float-right"><?= ucfirst($customer["CodigoCliente"]); ?></a>
+                    </li>
+                </ul>
+                <!-- <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a> -->
+            </div>
+        </div>
+
+        <div class="box card card-primary margin-top20">
+            <div class="block-title--myac card-header">
+                <h3 class="card-title">Condiciones de pago</h3>
+            </div>
+            <div class="card-body">
+                <strong><i class="fas fa-file-invoice"></i> Condición de pago</strong>
+                <p class="text-muted"> <?= strtolower(utf8_decode($customer["Condicion Pago"])); ?> </p>
+                <hr>
+                <strong><i class="fas fa-money-check-alt"></i> Cupo</strong>
+                <p class="text-muted"> <?= '$ ' . number_format($customer["Credito"], 0, ',', '.'); ?></p>
+                <hr>
+                <strong><i class="fas fa-dollar-sign"></i> Cupo Utilizado</strong>
+                <p class="text-muted"> <?=  '$ ' . number_format($customer["Saldo"], 0, ',', '.'); ?> </p>
+                <hr>
+                <strong><i class="fas fa-hand-holding-usd"></i> Cupo Disponible</strong>
+                <p class="text-muted"> <?=  '$ ' . number_format($customer["CupoAprobado"], 0, ',', '.'); ?> </p>
+                <hr>
+                <!--strong><i class="fas fa-file-invoice-dollar"></i> Pedidos Pendientes</strong>
+                <p class="text-muted"> <?= number_format($customer["PedidosPendientes"], 0, ',', '.'); ?> </p>
+                <hr>
+                <strong><i class="fas fa-money-check"></i> Cantidad Vencidos</strong>
+                <p class="text-muted"> 
+                    <?php
+                    if($customer["CantidadVencidos"] == "null" OR $customer["CantidadVencidos"] == ""){
+                        $cantidad_vencidos = 0;
+                    }else{
+                        $cantidad_vencidos = $customer["CantidadVencidos"];
+                    }
+                        echo number_format( $cantidad_vencidos , 0, ',', '.'); 
+                    ?> 
+                </p>
+                <hr-->
+                <strong><i class="fas fa-money-check"></i> Total Vencidos</strong>
+                <p class="text-muted"> 
+                    <?php
+                    if($customer["TotalVencidos"] == "null" OR $customer["TotalVencidos"] == ""){
+                        $total_vencidos = 0;
+                    }else{
+                        $total_vencidos = $customer["TotalVencidos"];
+                    }
+                        echo '$ ' . number_format( $total_vencidos , 0, ',', '.'); 
+                    ?> 
+                </p>
+                <hr>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="box card card-primary card-outline margin-top20">
+            <div class="block-title--myac card-body box-profile">
+                <h3 class="profile-username text-left">Ejecutivo de cuenta</h3>
+                <ul class="list-group list-group-unbordered mb-3">
+                    <?php  
+                        $ejecutivo = "Servicio al cliente";
+                        $ejecutivo_tlf = "+56 2 2712 3215";
+                        $ejecutivo_email = "servicioalcliente@nipon.cl";
+                        if(strtolower(strtolower($customer["Ejecutivo"])) != "null" AND trim($customer["Ejecutivo"]) != "" ){
+                            $ejecutivo = $customer["Ejecutivo"];
+                            if(strtolower(strtolower($customer["Telefono"])) != "null" AND trim($customer["Telefono"]) != ""){
+                                $ejecutivo_tlf = $customer["Telefono"];
+                            }
+                            if(strtolower(strtolower($customer["Mail"])) != "null" AND trim($customer["Mail"]) != ""){
+                                $ejecutivo_email = $customer["Mail"];
+                            }
+                        }elseif(strtolower(strtolower($customer["Ejecutivo Telefonico"])) != "null" AND trim($customer["Ejecutivo Telefonico"]) != "" ){
+                            $ejecutivo = $customer["Ejecutivo Telefonico"];
+                            if(strtolower(strtolower($customer["Telefono Ejecutivo Tel"])) != "null" AND trim($customer["Telefono Ejecutivo Tel"]) != ""){
+                                $ejecutivo_tlf = $customer["Telefono Ejecutivo Tel"];
+                            }
+                            if(strtolower(strtolower($customer["Mail Ejecutivo tel"])) != "null" AND trim($customer["Mail Ejecutivo tel"]) != ""){
+                                $ejecutivo_email = $customer["Mail Ejecutivo tel"];
+                            }
+                        }
+                    ?>
+                    <li class="list-group-item">
+                        <b>Ejecutivo(a): </b> <a class="float-right"><?= ucfirst(strtolower($ejecutivo)); ?></a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Teléfono: </b> 
+                        <a class="float-right">
+                            <?= $ejecutivo_tlf; ?>
+                        </a>
+                        <?php
+                            $tlf_link = str_replace("+","",$ejecutivo_tlf);
+                            $tlf_link = str_replace(" ","",$tlf_link);
+                        ?>
+                        &nbsp;&nbsp;<a href="https://wa.me/<?php echo $tlf_link;?>" style="cursor: pointer;"><i class="fab fa-whatsapp"></i></a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Email: </b> 
+                        <a class="float-right">
+                            <?= $ejecutivo_email; ?>
+                        </a>
+                        &nbsp;&nbsp;<a href="mailto: <?php echo $ejecutivo_email; ?>" style="cursor: pointer;"><i class="far fa-envelope"></i></a>
+                    </li>
+
+                </ul>
+                <!-- <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a> -->
+            </div>
+        </div>
+        <?php if ($customer["Ejecutivo Telefonico"] != "" AND $customer["Ejecutivo Telefonico"] != "null" AND $customer["Ejecutivo Telefonico"] != "Null" AND $customer["Ejecutivo Telefonico"] != $ejecutivo): ?>
+        <?php if(strtolower(strtolower($customer["Ejecutivo"])) != "null" AND trim($customer["Ejecutivo"]) != ""):?>    
+        <div class="box card card-primary card-outline margin-top20">
+            <div class="block-title--myac card-body box-profile">
+                <h3 class="profile-username text-left">Ejecutivo telefónico</h3>
+                <ul class="list-group list-group-unbordered mb-3">
+                    <li class="list-group-item">
+                        <b>Ejecutivo(a): </b> <a class="float-right"><?= ucfirst(strtolower($customer["Ejecutivo Telefonico"])); ?></a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Telefono: </b> 
+                        <a class="float-right">
+                            <?= ucfirst(strtolower($customer["Telefono Ejecutivo Tel"])); ?>
+                        </a>
+                        <?php
+                            $tlf_link = str_replace("+","",$customer["Telefono Ejecutivo Tel"]);
+                            $tlf_link = str_replace(" ","",$tlf_link);
+                        ?>
+                        &nbsp;&nbsp;<a href="https://wa.me/<?php echo $tlf_link;?>" style="cursor: pointer;"><i class="fab fa-whatsapp"></i></a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Email: </b> 
+                        <a class="float-right">
+                            <?= $customer["Mail Ejecutivo tel"]; ?>
+                        </a>
+                        &nbsp;&nbsp;<a href="mailto: <?php echo $customer["Mail Ejecutivo tel"]?>" style="cursor: pointer;"><i class="far fa-envelope"></i></a>
+                    </li>
+                </ul>
+                <!-- <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a> -->
+            </div>
+        </div>
+        <?php endif; ?>
+        <?php endif; ?>
+        <div class="box card card-primary margin-top20">
+            <div class="block-title--myac card-header">
+                <h3 class="card-title"><i class="fas fa-map-marked-alt"></i> Direccion de despacho</h3>
+            </div>
+            <?php foreach($customer_addres as $address): ?>
+                <?php if(strtolower(utf8_decode($address["TipoDireccion"])) == "envío"): ?>
+                    <?php if($customer_obj->getTipoUsuario() == "comprador"): ?>    
+                        <?php if($customer_shipping->getShipToCode() == utf8_decode($address["NombreDireccion"])): ?>    
+                            <div class="card-body">
+                                <strong><?php echo utf8_decode($address["NombreDireccion"]) ?></strong>
+                                <p class="text-muted"><?php echo utf8_decode($address["Calle"].", ".$address["Ciudad"].", ".$address["Comuna"].", ".$address["NombreRegion"]); ?></p>
+                            </div>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <div class="card-body">
+                            <strong><?php echo $address["NombreDireccion"]?></strong>
+                            <p class="text-muted"><?php echo utf8_decode($address["Calle"].", ".$address["Ciudad"].", ".$address["Comuna"].", ".$address["NombreRegion"]); ?></p>
+                        </div>
+                    <?php endif; ?>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
+
+        <div class="box card card-primary margin-top20">
+            <div class="block-title--myac card-header">
+                <h3 class="card-title"><i class="fas fa-file-invoice-dollar"></i>  Direccion de facturación</h3>
+            </div>
+            <?php foreach($customer_addres as $address): ?>
+                <?php if(strtolower(utf8_decode($address["TipoDireccion"])) == "facturación"): ?>    
+                    <?php if($customer_billing->getPayToCode() == utf8_decode($address["NombreDireccion"]) ): ?>    
+                        <div class="card-body">
+                            <strong><?php echo utf8_decode($address["NombreDireccion"]) ?></strong>
+                            <p class="text-muted"><?php echo utf8_decode($address["Calle"].", ".$address["Ciudad"].", ".$address["Comuna"].", ".$address["NombreRegion"]); ?></p>
+                        </div>
+                    <?php endif; ?>
+
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        
+    </div>
+</div>
