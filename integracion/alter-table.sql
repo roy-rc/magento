@@ -1,0 +1,1 @@
+ALTER TABLE catalog_product_entity_varchar MODIFY value TEXT;
